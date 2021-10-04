@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Weather App</title>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+		<link
+			rel="stylesheet"
+			href="https://www.w3schools.com/lib/w3-colors-flat.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+			integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+			crossorigin=""
+		/>
+		<script
+			src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+			integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+			crossorigin=""
+		></script>
+		<style>
+			#map {
+				height: 360px;
+				width: 480px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<div class="intro w3-container w3-flat-peter-river">
+				<h1>Weather App</h1>
+				<p>
+					Location and weather, saving to a database, querying, and mapping.
+				</p>
+				<p><a href="/">Checkin</a>|<a href="/checkins">Previous Checkins</a></p>
+			</div>
+			<div class="w3-container w3-flat-silver">
+				<div class="w3-row">
+					<div id="loc" class="w3-col s10 m4 w3-padding">
+						<h3>Your Location</h3>
+					</div>
+					<div id="map" class="w3-col s10 m8 w3-padding"></div>
+				</div>
+			</div>
+		</div>
+		<script>
+			let lat, long;
+
+			if ("geolocation" in navigator) {
+				console.log("geolocation available");
+				navigator.geolocation.getCurrentPosition((position) => {
+					lat = position.coords.latitude;
+					long = position.coords.longitude;
+					latitude = document.createElement("p");
+					latitude.textContent = "latitude: " + lat;
+					longitude = document.createElement("p");
+					longitude.textContent = "longitude: " + long;
+					document.getElementById("loc").append(latitude, longitude);
+					var btn = document.createElement("button");
+					btn.textContent = "Check in";
+					document.getElementById("loc").append(btn);
+					btn.addEventListener("click", async () => {
+						const data = { lat, long };
+						const options = {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(data),
+						};
+						const response = await fetch("/api", options);
+						const json = await response.json();
+						console.log(json);
+					});
+					createMap(lat, long);
+					getWeather(lat, long);
+				});
+			} else {
+				console.log("geolocation not available");
+			}
+
+			function createMap(lat, long) {
+				let marker = L.marker([lat, long]);
+
+				mymap = L.map("map").setView([lat, long], 12);
+				const attribution =
+					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+				const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+				const tiles = L.tileLayer(tileUrl, { attribution });
+				tiles.addTo(mymap);
+				marker.addTo(mymap);
+			}
+
+			async function getWeather(lat, long) {
+				lat = lat.toFixed(1); //get those strings to the right length
+				long = long.toFixed(1);
+				const api_key = "ba2e504dd7871e48f816c0e459d77ac7";
+				const api_url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${api_key}`;
+				const response = await fetch(api_url);
+				const json = await response.json();
+				console.log(json);
+			}
+		</script>
+	</body>
+</html>

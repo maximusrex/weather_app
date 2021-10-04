@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Weather App</title>
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+		<link
+			rel="stylesheet"
+			href="https://www.w3schools.com/lib/w3-colors-flat.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+			integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+			crossorigin=""
+		/>
+		<script
+			src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+			integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+			crossorigin=""
+		></script>
+		<style>
+			.main {
+				min-height: 100vh;
+			}
+			#map {
+				height: 360px;
+				width: 85%;
+				left: 50%;
+				transform: translateX(-50%);
+				margin: 1em 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main w3-flat-asbestos">
+			<div class="intro w3-container w3-flat-peter-river">
+				<h1>Weather App</h1>
+				<p>
+					Location and weather, saving to a database, querying, and mapping.
+				</p>
+				<p><a href="/">Checkin</a>|<a href="/checkins">Previous Checkins</a></p>
+			</div>
+			<div class="w3-container w3-flat-silver">
+				<h3>Previous Checkins</h3>
+				<div id="map"></div>
+			</div>
+		</div>
+		<script src="logs.js"></script>
+	</body>
+</html>
