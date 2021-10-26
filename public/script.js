@@ -110,5 +110,10 @@ async function weatherMap(lat, long) {
 		const response = await fetch("/api", options);
 		const json = await response.json();
 		console.log(json);
+		let resMsg = document.createElement("p");
+		resMsg.textContent =
+			"Thank you for your entry. Reload this page to make another.";
+		weatherDiv.append(resMsg);
+		btn.remove();
 	});
 }
